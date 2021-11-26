@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_project/http/base_request.dart';
+import 'package:flutter_project/http/request/base_request.dart';
 
 
 

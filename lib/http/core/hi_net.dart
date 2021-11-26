@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_project/http/base_request.dart';
+import 'package:flutter_project/http/request/base_request.dart';
 import 'package:flutter_project/http/core/dio_adapter.dart';
 import 'package:flutter_project/http/core/hi_error.dart';
 import 'package:flutter_project/http/core/hi_net_adapter.dart';
