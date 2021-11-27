@@ -14,24 +14,24 @@ class LoginDao {
   }
 
   ///注册
-  static registration(String userName, String passWord, id, orderId) {
-    return _send(userName, passWord, id: id, orderId: orderId);
+  static registration(String userName, String passWord, String rePassWord) {
+    return _send(userName, passWord,rePassWord: rePassWord);
   }
 
 
-  static _send(String userName, String passWord, {id, orderId}) async {
+  static _send(String userName, String passWord, {rePassWord}) async {
     BaseRequest request;
-    if (id != null && orderId != null) {
+    if (rePassWord != null) {
       request = RegisterRequest();
     } else {
       request = LoginRequest();
     }
     request
-        .add("userName", userName)
+        .add("username", userName)
         .add("password", passWord)
-        .add("imoocId", id)
-        .add("orderId", orderId);
+        .add("repassword", rePassWord??'');
     var result = await HiNet.getInstance().fire(request);
+    print("result = $result");
 
     if(result['code']==0 &&result['data']!=null){
       HiCache.getInstance()?.setString(LOGIN_TOKEN, result['data']);

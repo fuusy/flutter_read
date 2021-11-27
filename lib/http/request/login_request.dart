@@ -13,6 +13,6 @@ class LoginRequest extends BaseRequest {
 
   @override
   String path() {
-    return "/uapi/user/login";
+    return "/user/login";
   }
 }

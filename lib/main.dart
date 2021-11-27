@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/db/hi_cache.dart';
 import 'package:flutter_project/http/core/hi_net.dart';
 import 'package:flutter_project/http/test/test_request.dart';
 import 'package:flutter_project/page/home_page.dart';
+import 'package:flutter_project/page/login_page.dart';
+import 'package:flutter_project/page/register_page.dart';
+import 'package:flutter_project/utils/color.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,6 +15,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    HiCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -23,9 +29,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: white,
       ),
-      home: MyHomePage(title: "ce"),
+      home: LoginPage(),
     );
   }
 }

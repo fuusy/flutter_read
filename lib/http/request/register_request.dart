@@ -13,6 +13,6 @@ class RegisterRequest extends BaseRequest {
 
   @override
   String path() {
-    return "/uapi/user/registration";
+    return "/user/register";
   }
 }

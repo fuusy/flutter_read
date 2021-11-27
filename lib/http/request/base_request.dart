@@ -9,7 +9,7 @@ abstract class BaseRequest {
 
   //域名
   String authority() {
-    return "api.devio.org";
+    return "www.wanandroid.com";
   }
 
   HttpMethod httpMethod();
