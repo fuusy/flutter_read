@@ -130,6 +130,9 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
     tempPages = [...tempPages, page];
     pages = tempPages;
 
+    //进入页面 通知路由变化
+    FNavigator.getInstance()?.notify(tempPages, pages);
+
     return WillPopScope(
         child: Navigator(
           key: navigatorKey,
@@ -147,6 +150,11 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
             if (!route.didPop(result)) {
               return false;
             }
+
+            //退出时，通知页面变化
+            var tempPages = [...pages];
+            pages.removeLast();
+            FNavigator.getInstance()?.notify(pages, tempPages);
             return true;
           },
         ),

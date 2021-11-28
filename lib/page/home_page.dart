@@ -11,6 +11,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  var listener;
+  @override
+  void initState() {
+    super.initState();
+    FNavigator.getInstance()?.addRouteListener(this.listener = (curInfo, preInfo) => {
+      print('home ${curInfo.page}')
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    FNavigator.getInstance()?.removeRouteListener(this.listener);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
