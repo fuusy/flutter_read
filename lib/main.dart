@@ -1,22 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/db/hi_cache.dart';
-import 'package:flutter_project/http/core/hi_net.dart';
+import 'package:flutter_project/db/f_cache.dart';
+import 'package:flutter_project/http/core/f_net.dart';
+import 'package:flutter_project/http/dao/login_dao.dart';
+import 'package:flutter_project/http/model/video_model.dart';
 import 'package:flutter_project/http/test/test_request.dart';
+import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
+import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/utils/color.dart';
+import 'package:flutter_project/utils/toast_util.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(FApp());
+}
+
+class FApp extends StatefulWidget {
+  const FApp({Key? key}) : super(key: key);
+
+  @override
+  _FAppState createState() => _FAppState();
+}
+
+class _FAppState extends State<FApp> {
+  FRouteDelegate _routeDelegate = FRouteDelegate();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<FCache?>(
+        future: FCache.preInit(),
+        builder: (BuildContext context, AsyncSnapshot<FCache?> snap) {
+          var widget = snap.connectionState == ConnectionState.done
+              ? Router(
+            routerDelegate: _routeDelegate,
+          )
+              : Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+
+          return MaterialApp(
+            home: widget,
+            theme: ThemeData(primarySwatch: white),
+          );
+        });
+  }
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    HiCache.preInit();
+    FCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -36,84 +73,99 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class FRouteDelegate extends RouterDelegate<RoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
+  final GlobalKey<NavigatorState> navigatorKey;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  FRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    //跳转listener
+    FNavigator.getInstance()!.registerRouteJumpListener(
+        RouteJumpListener(onJumpTo: (RouteStatus status, {Map? args}) {
+          _routeStatus = status;
+          if (status == RouteStatus.detail) {
+            this.videoModel = args!['videoModel'];
+          }
+          notifyListeners();
+        }));
+  }
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  List<MaterialPage> pages = [];
+  VideoModel? videoModel;
 
-  final String title;
+  RoutePath? path;
+  RouteStatus _routeStatus = RouteStatus.home;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() async {
-    TestRequest request = TestRequest();
-    request.add("gg", "kk").add("ff", "sdd").add("requestPrams", "cc");
-    var result = await HiNet.getInstance().fire(request);
-    print(result);
+  RouteStatus get routeStatus {
+    if (_routeStatus != RouteStatus.register && LoginDao.getToken() == null) {
+      //不是注册页面且没登录，即跳到登录界面
+      return _routeStatus = RouteStatus.login;
+    } else if (videoModel != null) {
+      return _routeStatus = RouteStatus.detail;
+    } else {
+      return _routeStatus;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    var index = getPageIndex(pages, routeStatus);
+    List<MaterialPage> tempPages = pages;
+    if (index != -1) {
+      tempPages = tempPages.sublist(0, index);
+    }
+
+    //根据状态，创建各个page
+    var page;
+    if (routeStatus == RouteStatus.home) {
+      pages.clear();
+      page = pageWrap(HomePage());
+    } else if (routeStatus == RouteStatus.detail) {
+      page = pageWrap(VideoDetailPage(videoModel!));
+    } else if (routeStatus == RouteStatus.register) {
+      page = pageWrap(RegisterPage());
+    } else if (routeStatus == RouteStatus.login) {
+      page = pageWrap(LoginPage());
+    }
+
+    tempPages = [...tempPages, page];
+    pages = tempPages;
+
+    return WillPopScope(
+        child: Navigator(
+          key: navigatorKey,
+          pages: pages,
+          onPopPage: (route, result) {
+            if (route.settings is MaterialPage) {
+              if ((route.settings as MaterialPage).child is LoginPage) {
+                if (LoginDao.getToken() == null) {
+                  showToast('请先登录');
+                  return false;
+                }
+              }
+            }
+
+            if (!route.didPop(result)) {
+              return false;
+            }
+            return true;
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        onWillPop: () async => !await navigatorKey.currentState!.maybePop());
   }
+
+  @override
+  Future<void> setNewRoutePath(RoutePath configuration) async {}
+}
+
+pageWrap(Widget child) {
+  return MaterialPage(key: ValueKey(child.hashCode), child: child);
+}
+
+///页面路径
+class RoutePath {
+  final String? location;
+
+  RoutePath.home() : location = "/";
+
+  RoutePath.detail() : location = "/detail";
 }

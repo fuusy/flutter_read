@@ -5,13 +5,13 @@ import 'package:flutter_project/http/request/base_request.dart';
 
 
 ///网络请求抽象类
-abstract class HiNetAdapter{
-  Future<HiNetResponse<T>> send<T>(BaseRequest request);
+abstract class FNetAdapter{
+  Future<BaseNetResponse<T>> send<T>(BaseRequest request);
 }
 
 ///基本数据类型
-class HiNetResponse<T> {
-  HiNetResponse(
+class BaseNetResponse<T> {
+  BaseNetResponse(
       {this.data,
       this.request,
       this.statusCode,

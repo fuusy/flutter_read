@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_project/http/request/base_request.dart';
 import 'package:flutter_project/http/core/dio_adapter.dart';
-import 'package:flutter_project/http/core/hi_error.dart';
-import 'package:flutter_project/http/core/hi_net_adapter.dart';
+import 'package:flutter_project/http/core/f_error.dart';
+import 'package:flutter_project/http/core/f_net_adapter.dart';
 
-class HiNet {
-  HiNet._();
+class FNet {
+  FNet._();
 
-  static HiNet? _instance;
+  static FNet? _instance;
 
-  static HiNet getInstance() {
+  static FNet getInstance() {
     if (_instance == null) {
-      _instance = HiNet._();
+      _instance = FNet._();
     }
     return _instance!;
   }
 
   Future fire(BaseRequest request) async {
-    HiNetResponse? response;
+    BaseNetResponse? response;
     var error;
     try {
       response = await send(request);
-    } on HiNetError catch(e){
+    } on FNetError catch(e){
       error = e;
       response = e.data;
       printLog(e.message);
@@ -45,14 +45,14 @@ class HiNet {
       case 403:
         throw NeedAuth(result.toString(),data: result);
       default:
-        throw HiNetError(status ?? -1, result.toString(),data: result);
+        throw FNetError(status ?? -1, result.toString(),data: result);
     }
 
   }
 
 
-  Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
-    HiNetAdapter adapter = DioAdapter();
+  Future<BaseNetResponse<T>> send<T>(BaseRequest request) async {
+    FNetAdapter adapter = DioAdapter();
     return adapter.send(request);
   }
 

@@ -1,6 +1,6 @@
-import 'package:flutter_project/db/hi_cache.dart';
+import 'package:flutter_project/db/f_cache.dart';
 import 'package:flutter_project/http/request/base_request.dart';
-import 'package:flutter_project/http/core/hi_net.dart';
+import 'package:flutter_project/http/core/f_net.dart';
 import 'package:flutter_project/http/request/login_request.dart';
 import 'package:flutter_project/http/request/register_request.dart';
 
@@ -30,16 +30,16 @@ class LoginDao {
         .add("username", userName)
         .add("password", passWord)
         .add("repassword", rePassWord??'');
-    var result = await HiNet.getInstance().fire(request);
+    var result = await FNet.getInstance().fire(request);
     print("result = $result");
 
     if(result['code']==0 &&result['data']!=null){
-      HiCache.getInstance()?.setString(LOGIN_TOKEN, result['data']);
+      FCache.getInstance()?.setString(LOGIN_TOKEN, result['data']);
     }
     return result;
   }
 
   static getToken(){
-    return HiCache.getInstance()?.get(LOGIN_TOKEN);
+    return FCache.getInstance()?.get(LOGIN_TOKEN);
   }
 }

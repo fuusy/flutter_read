@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_project/http/request/base_request.dart';
-import 'package:flutter_project/http/core/hi_error.dart';
-import 'package:flutter_project/http/core/hi_net_adapter.dart';
+import 'package:flutter_project/http/core/f_error.dart';
+import 'package:flutter_project/http/core/f_net_adapter.dart';
 
-class DioAdapter extends HiNetAdapter {
+class DioAdapter extends FNetAdapter {
   @override
-  Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
+  Future<BaseNetResponse<T>> send<T>(BaseRequest request) async {
     Response? response ;
     var option = Options(headers: request.header);
     var error;
@@ -27,16 +27,16 @@ class DioAdapter extends HiNetAdapter {
     }
 
     if (error != null) {
-      throw HiNetError(response?.statusCode ??-1, error.toString(),data: await buildRes(response,request));
+      throw FNetError(response?.statusCode ??-1, error.toString(),data: await buildRes(response,request));
     }
 
     return buildRes(response, request);
   }
 
   ///构建HiNetResponse
-  Future<HiNetResponse<T>> buildRes<T>(
+  Future<BaseNetResponse<T>> buildRes<T>(
       Response? response, BaseRequest request) {
-    return Future.value(HiNetResponse(
+    return Future.value(BaseNetResponse(
       //?.防止response为空
         data: response?.data,
         request: request,

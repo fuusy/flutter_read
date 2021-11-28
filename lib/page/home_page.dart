@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/http/model/video_model.dart';
+import 'package:flutter_project/navigator/f_navigatior.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,19 +14,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          decoration: new BoxDecoration(
-            border: Border.all(color: Colors.grey,width: 1.0),
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(5.0))
-          ),
-          height: 36,
-
+      appBar: AppBar(),
+      body: Container(
+        child: Column(
+          children: [
+            Text('首页'),
+            MaterialButton(
+              onPressed: () => {
+                FNavigator.getInstance()!.onJumpTo(RouteStatus.detail,
+                    args: {'videoModel': VideoModel(1)})
+              },
+              child: Text('跳转到详情'),
+            )
+          ],
         ),
       ),
-
     );
   }
 }
