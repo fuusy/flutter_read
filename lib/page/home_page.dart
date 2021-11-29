@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageState extends FNetState<HomePage>
     with AutomaticKeepAliveClientMixin {
   var listener;
 

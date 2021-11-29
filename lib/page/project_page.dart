@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/http/core/f_error.dart';
+import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/project_dao.dart';
 import 'package:flutter_project/model/project/project_tab_model.dart';
 
@@ -12,7 +13,7 @@ class ProjectPage extends StatefulWidget {
   _ProjectPageState createState() => _ProjectPageState();
 }
 
-class _ProjectPageState extends State<ProjectPage>
+class _ProjectPageState extends FNetState<ProjectPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   List<ProjectTabModel> projectTabList = [];
 

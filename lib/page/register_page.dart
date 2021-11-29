@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/http/core/f_error.dart';
+import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/utils/string_util.dart';
@@ -14,7 +15,7 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends FNetState<RegisterPage> {
   String? userName;
   String? passWord;
   String? rePassword;

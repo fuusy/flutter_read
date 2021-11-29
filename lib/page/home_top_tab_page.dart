@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/http/core/f_net_state.dart';
 
 class HomeTabPage extends StatefulWidget {
 
@@ -10,7 +11,7 @@ class HomeTabPage extends StatefulWidget {
   _HomeTabPageState createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends State<HomeTabPage> {
+class _HomeTabPageState extends FNetState<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
     return Container(

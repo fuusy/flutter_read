@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/http/core/f_error.dart';
+import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/utils/string_util.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends FNetState<LoginPage> {
   String? userName;
   String? passWord;
   bool loginEnable = false;
