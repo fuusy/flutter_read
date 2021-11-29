@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar("注册", "登录", () {
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.register);
+        FNavigator.getInstance()?.onJumpTo(RouteStatus.login);
       }),
       body: Container(
         child: ListView(

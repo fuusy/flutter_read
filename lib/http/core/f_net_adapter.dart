@@ -14,14 +14,14 @@ class BaseNetResponse<T> {
   BaseNetResponse(
       {this.data,
       this.request,
-      this.statusCode,
-      this.statusMessage,
+      this.errorCode,
+      this.errorMsg,
       this.extra});
 
   T? data;
   BaseRequest? request;
-  int? statusCode;
-  String? statusMessage;
+  int? errorCode;
+  String? errorMsg;
   dynamic extra;
 
   @override

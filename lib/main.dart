@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/db/f_cache.dart';
 import 'package:flutter_project/http/core/f_net.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
-import 'package:flutter_project/http/model/video_model.dart';
 import 'package:flutter_project/http/test/test_request.dart';
+import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
@@ -11,6 +11,8 @@ import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/utils/color.dart';
 import 'package:flutter_project/utils/toast_util.dart';
+
+import 'model/video_model.dart';
 
 void main() {
   runApp(FApp());
@@ -96,10 +98,11 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
   RouteStatus _routeStatus = RouteStatus.home;
 
   RouteStatus get routeStatus {
-    if (_routeStatus != RouteStatus.register && LoginDao.getToken() == null) {
-      //不是注册页面且没登录，即跳到登录界面
-      return _routeStatus = RouteStatus.login;
-    } else if (videoModel != null) {
+    // if (_routeStatus != RouteStatus.register && LoginDao.getToken() == null) {
+    //   //不是注册页面且没登录，即跳到登录界面
+    //   return _routeStatus = RouteStatus.login;
+    // } else
+      if (videoModel != null) {
       return _routeStatus = RouteStatus.detail;
     } else {
       return _routeStatus;
@@ -118,7 +121,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
     var page;
     if (routeStatus == RouteStatus.home) {
       pages.clear();
-      page = pageWrap(HomePage());
+      page = pageWrap(BottomNavigator());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel!));
     } else if (routeStatus == RouteStatus.register) {

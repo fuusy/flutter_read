@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
@@ -33,7 +34,7 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.login;
   } else if (page.child is RegisterPage) {
     return RouteStatus.register;
-  } else if (page.child is HomePage) {
+  } else if (page.child is BottomNavigator) {
     return RouteStatus.home;
   } else if (page.child is VideoDetailPage) {
     return RouteStatus.detail;
@@ -56,6 +57,7 @@ class FNavigator extends _RouteJumpListener {
   List<RouteChangeListener> _listener = [];
 
   RouteStatusInfo? _cur;
+  RouteStatusInfo? _bottomTab;
 
   static FNavigator? getInstance() {
     if (_instance == null) {
@@ -89,12 +91,21 @@ class FNavigator extends _RouteJumpListener {
     this.routeJumpListener = listener;
   }
 
+  ///底部tab切换监听
+  void onBottomTabChange(int index,Widget page){
+    _bottomTab = RouteStatusInfo(RouteStatus.home, page);
+    _notify(_bottomTab!);
+  }
+
   @override
   void onJumpTo(RouteStatus status, {Map? args}) {
     routeJumpListener!.onJumpTo!(status, args: args);
   }
 
   void _notify(RouteStatusInfo cur) {
+    if(cur.page is BottomNavigator && _bottomTab!=null){
+      cur = _bottomTab!;
+    }
     _listener.forEach((element) {
       element(cur,_cur!);
     });

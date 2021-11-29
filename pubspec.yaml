@@ -32,6 +32,7 @@ dependencies:
   json_annotation: ^4.0.1
   shared_preferences: ^2.0.6
   fluttertoast: ^8.0.6
+  underline_indicator: ^0.0.2 #指示器
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,7 @@ class DioAdapter extends FNetAdapter {
 
     try {
       if (request.httpMethod() == HttpMethod.GET) {
+        print("${request.url()}");
         response = (await Dio().get(request.url(), options: option)) ;
       } else if (request.httpMethod() == HttpMethod.POST) {
         print("${request.url()} ${request.params} $option");
@@ -40,8 +41,8 @@ class DioAdapter extends FNetAdapter {
       //?.防止response为空
         data: response?.data,
         request: request,
-        statusCode: response?.statusCode,
-        statusMessage: response?.statusMessage,
+        errorCode: response?.statusCode,
+        errorMsg: response?.statusMessage,
         extra: response));
   }
 

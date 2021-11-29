@@ -35,7 +35,7 @@ class FNet {
     }
     var result = response?.data;
     print(result);
-    var status = response?.statusCode;
+    var status = response?.errorCode;
     printLog("status = $status");
     switch(status){
       case 200:
