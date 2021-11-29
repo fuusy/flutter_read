@@ -53,7 +53,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         selectedItemColor: primary[50],
         items: [
           _bottomItem('首页', Icons.home, 0),
-          _bottomItem('排行', Icons.local_fire_department, 1),
+          _bottomItem('项目', Icons.local_fire_department, 1),
           _bottomItem('收藏', Icons.favorite, 2),
           _bottomItem('我的', Icons.person, 3),
         ],
