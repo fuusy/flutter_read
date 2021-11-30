@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/utils/color.dart';
 
+///登录、注册界面按钮
 class LoginButton extends StatelessWidget {
   final String? title;
   final bool enable;

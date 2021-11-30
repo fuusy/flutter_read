@@ -4,7 +4,7 @@ import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/project_dao.dart';
 import 'package:flutter_project/model/project/project_tab_model.dart';
 
-import 'home_top_tab_page.dart';
+import 'project_top_tab_page.dart';
 
 class ProjectPage extends StatefulWidget {
   const ProjectPage({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _ProjectPageState extends FNetState<ProjectPage>
           Flexible(
               child: TabBarView(
                 children: projectTabList.map((tab) {
-                  return HomeTabPage(name: tab.name);
+                  return ProjectTabPage(name: tab.name);
                 }).toList(),
                 controller: _tabController,
               ))

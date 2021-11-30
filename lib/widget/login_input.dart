@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/utils/color.dart';
 
+///登录、注册界面输入框组件
 class LoginInput extends StatefulWidget {
   final String? title;
   final String? hint;
