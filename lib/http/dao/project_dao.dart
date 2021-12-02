@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_project/http/core/f_net.dart';
 import 'package:flutter_project/http/request/project_request.dart';
 import 'package:flutter_project/http/request/project_tab_request.dart';
+import 'package:flutter_project/model/project/project_model.dart';
 import 'package:flutter_project/model/project/project_tab_model.dart';
 
 class ProjectDao {
@@ -18,5 +19,14 @@ class ProjectDao {
     }).toList();
 
     return list;
+  }
+
+  ///根据tab的cid分页请求项目模块数据
+  static getProjectFromTab(int pagePos, int cid) async{
+    ProjectRequest request = ProjectRequest();
+    request.pathParams="$pagePos/json";
+    request.add("cid", cid);
+    var result = await FNet.getInstance().fire(request);
+    return ProjectModel.fromJson(result['data']);
   }
 }

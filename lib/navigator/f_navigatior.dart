@@ -4,6 +4,7 @@ import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
+import 'package:flutter_project/page/webview_page.dart';
 
 ///路由状态变化listener
 ///通过堆栈信息发送变化来判断
@@ -27,7 +28,7 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus status) {
 }
 
 ///枚举，代表页面
-enum RouteStatus { login, register, home, detail, unknown }
+enum RouteStatus { login, register, home, detail, webview, unknown }
 
 RouteStatus getStatus(MaterialPage page) {
   if (page.child is LoginPage) {
@@ -38,6 +39,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.home;
   } else if (page.child is VideoDetailPage) {
     return RouteStatus.detail;
+  } else if (page.child is WebViewPage) {
+    return RouteStatus.webview;
   } else {
     return RouteStatus.unknown;
   }
@@ -92,7 +95,7 @@ class FNavigator extends _RouteJumpListener {
   }
 
   ///底部tab切换监听
-  void onBottomTabChange(int index,Widget page){
+  void onBottomTabChange(int index, Widget page) {
     _bottomTab = RouteStatusInfo(RouteStatus.home, page);
     _notify(_bottomTab!);
   }
@@ -103,11 +106,11 @@ class FNavigator extends _RouteJumpListener {
   }
 
   void _notify(RouteStatusInfo cur) {
-    if(cur.page is BottomNavigator && _bottomTab!=null){
+    if (cur.page is BottomNavigator && _bottomTab != null) {
       cur = _bottomTab!;
     }
     _listener.forEach((element) {
-      element(cur,_cur!);
+      element(cur, _cur!);
     });
     _cur = cur;
   }

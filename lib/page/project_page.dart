@@ -3,6 +3,7 @@ import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/project_dao.dart';
 import 'package:flutter_project/model/project/project_tab_model.dart';
+import 'package:flutter_project/utils/color.dart';
 
 import 'project_top_tab_page.dart';
 
@@ -35,18 +36,19 @@ class _ProjectPageState extends FNetState<ProjectPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var top = MediaQuery.of(context).padding.top; //刘海屏 刘海的高度
     return Scaffold(
       body: Column(
         children: [
           Container(
             child: _topTabBar(),
             color: Colors.white,
-            padding: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(top: top),
           ),
           Flexible(
               child: TabBarView(
                 children: projectTabList.map((tab) {
-                  return ProjectTabPage(name: tab.name);
+                  return ProjectTabPage(cid: tab.id);
                 }).toList(),
                 controller: _tabController,
               ))
@@ -75,7 +77,7 @@ class _ProjectPageState extends FNetState<ProjectPage>
         );
       }).toList(),
       indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(color: Colors.blue, width: 3),
+          borderSide: BorderSide(color: primary, width: 3),
           insets: EdgeInsets.only(left: 15, right: 15)),
     );
   }

@@ -3,12 +3,14 @@ import 'package:flutter_project/db/f_cache.dart';
 import 'package:flutter_project/http/core/f_net.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
 import 'package:flutter_project/http/test/test_request.dart';
+import 'package:flutter_project/model/home/home_article_model.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
+import 'package:flutter_project/page/webview_page.dart';
 import 'package:flutter_project/utils/color.dart';
 import 'package:flutter_project/utils/toast_util.dart';
 
@@ -35,13 +37,13 @@ class _FAppState extends State<FApp> {
         builder: (BuildContext context, AsyncSnapshot<FCache?> snap) {
           var widget = snap.connectionState == ConnectionState.done
               ? Router(
-            routerDelegate: _routeDelegate,
-          )
+                  routerDelegate: _routeDelegate,
+                )
               : Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
 
           return MaterialApp(
             home: widget,
@@ -83,16 +85,21 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
     //跳转listener
     FNavigator.getInstance()!.registerRouteJumpListener(
         RouteJumpListener(onJumpTo: (RouteStatus status, {Map? args}) {
-          _routeStatus = status;
-          if (status == RouteStatus.detail) {
-            this.videoModel = args!['videoModel'];
-          }
-          notifyListeners();
-        }));
+      _routeStatus = status;
+      if (status == RouteStatus.detail) {
+        this.videoModel = args!['videoModel'];
+      } else if (status == RouteStatus.webview) {
+        this.articleUrl = args!['article_path'];
+        this.articleTitle = args['article_title'];
+      }
+      notifyListeners();
+    }));
   }
 
   List<MaterialPage> pages = [];
   VideoModel? videoModel;
+  String? articleUrl;
+  String? articleTitle;
 
   RoutePath? path;
   RouteStatus _routeStatus = RouteStatus.home;
@@ -102,7 +109,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
     //   //不是注册页面且没登录，即跳到登录界面
     //   return _routeStatus = RouteStatus.login;
     // } else
-      if (videoModel != null) {
+    if (videoModel != null) {
       return _routeStatus = RouteStatus.detail;
     } else {
       return _routeStatus;
@@ -128,6 +135,11 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
       page = pageWrap(RegisterPage());
     } else if (routeStatus == RouteStatus.login) {
       page = pageWrap(LoginPage());
+    } else if (routeStatus == RouteStatus.webview) {
+      page = pageWrap(WebViewPage(
+        url: articleUrl,
+        title: articleTitle
+      ));
     }
 
     tempPages = [...tempPages, page];
@@ -143,10 +155,10 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
           onPopPage: (route, result) {
             if (route.settings is MaterialPage) {
               if ((route.settings as MaterialPage).child is LoginPage) {
-                if (LoginDao.getToken() == null) {
-                  showToast('请先登录');
-                  return false;
-                }
+                // if (LoginDao.getToken() == null) {
+                //   showToast('请先登录');
+                //   return false;
+                // }
               }
             }
 

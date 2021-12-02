@@ -26,3 +26,14 @@ appBar(String title, String rightTitle, VoidCallback rightButtonClick) {
     ],
   );
 }
+
+articleAppBar(String title){
+  return AppBar(
+    centerTitle: true,
+    leading: BackButton(),
+    title: Text(
+      title,
+      style: TextStyle(fontSize: 18),
+    ),
+  );
+}

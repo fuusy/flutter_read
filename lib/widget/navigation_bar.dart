@@ -14,7 +14,7 @@ class NavigationBar extends StatelessWidget {
       {Key? key,
       this.statusStyle = StatusStyle.DARK_STYLE,
       this.color = Colors.white,
-      this.height = 50,
+      this.height = 45,
       this.childWidget})
       : super(key: key);
 
@@ -43,6 +43,7 @@ class NavigationBar extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: top + height,
       child: childWidget,
+      padding: EdgeInsets.only(top: top),
       decoration: BoxDecoration(color: color),
     );
   }

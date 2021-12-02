@@ -1,6 +1,8 @@
 import 'package:flutter_project/http/request/base_request.dart';
 
-class ProjectRequest extends BaseRequest{
+///首页文章列表
+///https://www.wanandroid.com/article/list/0/json
+class HomeArticleRequest extends BaseRequest{
   @override
   HttpMethod httpMethod() {
     return HttpMethod.GET;
@@ -13,7 +15,7 @@ class ProjectRequest extends BaseRequest{
 
   @override
   String path() {
-    return "project/list/";
+    return 'article/list/';
   }
 
 }

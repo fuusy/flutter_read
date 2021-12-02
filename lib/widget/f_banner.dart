@@ -9,7 +9,7 @@ class FBanner extends StatelessWidget {
   final double? bannerHeight; //banner高度
   final EdgeInsetsGeometry? padding;
 
-  const FBanner(this.bannerList, {Key? key, this.bannerHeight = 150, this.padding})
+  const FBanner(this.bannerList, {Key? key, this.bannerHeight = 110, this.padding})
       : super(key: key);
 
   @override
