@@ -20,7 +20,7 @@ class LoginButton extends StatelessWidget {
         height: 45,
         onPressed: enable ? onPressed : null,
         disabledColor: Colors.grey,
-        color: Colors.amber,
+        color: primary,
         child: Text(
           title!,
           style: TextStyle(color: Colors.white, fontSize: 18),

@@ -67,7 +67,7 @@ class _HomePageState extends FNetState<HomePage>
 
   _banner() {
     return Padding(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: EdgeInsets.only(left: 20, right: 20,top: 20),
         child: FBanner(
           bannerList!,
         ));

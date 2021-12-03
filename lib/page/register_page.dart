@@ -4,7 +4,9 @@ import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/utils/string_util.dart';
+import 'package:flutter_project/utils/toast_util.dart';
 import 'package:flutter_project/widget/app_toolbar.dart';
+import 'package:flutter_project/widget/login_button.dart';
 import 'package:flutter_project/widget/login_input.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -86,10 +88,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
           checkParams();
         } else {}
       },
-      child: Text(
-        "注册",
-        style: TextStyle(fontSize: 18),
-      ),
+      child: LoginButton(title: "注册",enable: loginEnable),
     );
   }
 
@@ -99,7 +98,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
       tips = '两次密码不一致';
     }
     if (tips != null) {
-      print(tips);
+      showToast(tips);
       return;
     }
     send();

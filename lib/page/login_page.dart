@@ -3,6 +3,7 @@ import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
+import 'package:flutter_project/page/mine_page.dart';
 import 'package:flutter_project/utils/string_util.dart';
 import 'package:flutter_project/utils/toast_util.dart';
 import 'package:flutter_project/widget/app_toolbar.dart';
@@ -83,12 +84,11 @@ class _LoginPageState extends FNetState<LoginPage> {
     try {
       print("$userName $passWord ");
       var result = await LoginDao.login(userName!, passWord!);
-      if (result['code'] == 0) {
+      if (result['errorCode'] == 0) {
         print('登录成功');
         showToast('登录成功');
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.home);
       } else {
-        print(result['message']);
+        print(result['errorMsg']);
       }
     } on NeedAuth catch (e) {} on FNetError catch (e) {}
   }
