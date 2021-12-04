@@ -206,7 +206,7 @@ class _HomePageState
       child: Expanded(
           child: Container(
         child: ListView.builder(
-            itemCount: dataList!.length,
+            itemCount: dataList.length,
             controller: scrollController,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {

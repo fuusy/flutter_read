@@ -41,6 +41,6 @@ class FCache {
   }
 
   Object? get<T>(String key) {
-    return pres?.get(key);
+    return pres?.get(key) ?? null;
   }
 }

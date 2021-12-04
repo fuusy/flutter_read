@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/db/f_cache.dart';
-import 'package:flutter_project/http/core/f_net.dart';
-import 'package:flutter_project/http/dao/login_dao.dart';
-import 'package:flutter_project/http/test/test_request.dart';
-import 'package:flutter_project/model/home/home_article_model.dart';
+import 'package:flutter_project/db/sp_cache.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
-import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/page/webview_page.dart';
-import 'package:flutter_project/utils/color.dart';
-import 'package:flutter_project/utils/toast_util.dart';
+import 'package:flutter_project/provider/provider_manager.dart';
+import 'package:flutter_project/provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'model/video_model.dart';
 
@@ -45,35 +41,19 @@ class _FAppState extends State<FApp> {
                   ),
                 );
 
-          return MaterialApp(
-            home: widget,
-            theme: ThemeData(primarySwatch: white),
+          return MultiProvider(
+            providers: topProviders,
+            child: Consumer<ThemeProvider>(builder: (BuildContext context,
+                ThemeProvider themeProvider, Widget? child) {
+              return MaterialApp(
+                home: widget,
+                theme: themeProvider.getTheme(),
+                darkTheme: themeProvider.getTheme(isDarkMode: true),
+                themeMode: themeProvider.getThemeMode(),
+              );
+            }),
           );
         });
-  }
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    FCache.preInit();
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: white,
-      ),
-      home: LoginPage(),
-    );
   }
 }
 
@@ -136,10 +116,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
     } else if (routeStatus == RouteStatus.login) {
       page = pageWrap(LoginPage());
     } else if (routeStatus == RouteStatus.webview) {
-      page = pageWrap(WebViewPage(
-        url: articleUrl,
-        title: articleTitle
-      ));
+      page = pageWrap(WebViewPage(url: articleUrl, title: articleTitle));
     }
 
     tempPages = [...tempPages, page];

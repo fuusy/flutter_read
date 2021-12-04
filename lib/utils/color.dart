@@ -25,3 +25,8 @@ const MaterialColor primary = const MaterialColor(0xff739AF0, const <int, Color>
   800: Color(0xff739AF0),
   900: Color(0xff739AF0)
 });
+
+class BaColors{
+
+  static const Color dark_bg= Colors.black;
+}
