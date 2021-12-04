@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/base/base_refresh_load_state.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/home_dao.dart';
@@ -19,8 +20,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends FNetState<HomePage>
-    with AutomaticKeepAliveClientMixin {
+class _HomePageState
+    extends BaseRefreshLoadStateState<HomeArticleModel, ArticleInfo, HomePage> {
   var listener;
   List<BannerModel>? bannerList = [];
   List<ArticleInfo>? articleList = [];
@@ -32,7 +33,7 @@ class _HomePageState extends FNetState<HomePage>
     FNavigator.getInstance()?.addRouteListener(
         this.listener = (curInfo, preInfo) => {print('home ${curInfo.page}')});
     _loadBanner();
-    _loadArticle();
+    //_loadArticle();
   }
 
   @override
@@ -41,33 +42,33 @@ class _HomePageState extends FNetState<HomePage>
     FNavigator.getInstance()?.removeRouteListener(this.listener);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          NavigationBar(
-            childWidget: _appBar(),
-            statusStyle: StatusStyle.DARK_STYLE,
-          ),
-          MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: _buildTypeList(),
-          )
-        ],
-      ),
-    );
-  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   super.build(context);
+  //   return Scaffold(
+  //     backgroundColor: Colors.white,
+  //     body: Column(
+  //       children: [
+  //         NavigationBar(
+  //           childWidget: _appBar(),
+  //           statusStyle: StatusStyle.DARK_STYLE,
+  //         ),
+  //         MediaQuery.removePadding(
+  //           context: context,
+  //           removeTop: true,
+  //           child: _buildTypeList(),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   bool get wantKeepAlive => true;
 
   _banner() {
     return Padding(
-        padding: EdgeInsets.only(left: 20, right: 20,top: 20),
+        padding: EdgeInsets.only(left: 20, right: 20, top: 20),
         child: FBanner(
           bannerList!,
         ));
@@ -147,21 +148,21 @@ class _HomePageState extends FNetState<HomePage>
       padding: EdgeInsets.only(top: 20, left: 5, right: 5),
       child: Container(
           child: GridView.count(
-            shrinkWrap: true,
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 5,
-            crossAxisCount: 4,
-            children: [
-              _buildGridItem('images/icon_iv.png', '面试'),
-              _buildGridItem('images/icon_big.png', '大厂分享'),
-              _buildGridItem('images/icon_op.png', '性能优化'),
-              _buildGridItem('images/icon_daily.png', '每日一问'),
-              _buildGridItem('images/icon_jetpack.png', 'Jetpack'),
-              _buildGridItem('images/icon_open.png', '开源库源码'),
-              _buildGridItem('images/icon_framework.png', 'Framework'),
-              _buildGridItem('images/icon_kotlin.png', 'Kotlin'),
-            ],
-          )),
+        shrinkWrap: true,
+        mainAxisSpacing: 0,
+        crossAxisSpacing: 5,
+        crossAxisCount: 4,
+        children: [
+          _buildGridItem('images/icon_iv.png', '面试'),
+          _buildGridItem('images/icon_big.png', '大厂分享'),
+          _buildGridItem('images/icon_op.png', '性能优化'),
+          _buildGridItem('images/icon_daily.png', '每日一问'),
+          _buildGridItem('images/icon_jetpack.png', 'Jetpack'),
+          _buildGridItem('images/icon_open.png', '开源库源码'),
+          _buildGridItem('images/icon_framework.png', 'Framework'),
+          _buildGridItem('images/icon_kotlin.png', 'Kotlin'),
+        ],
+      )),
     );
   }
 
@@ -194,7 +195,7 @@ class _HomePageState extends FNetState<HomePage>
       context: context,
       removeTop: true,
       child: ArticleItem(
-        articleInfo: articleList![index],
+        articleInfo: dataList[index],
       ),
     );
   }
@@ -204,7 +205,8 @@ class _HomePageState extends FNetState<HomePage>
       child: Expanded(
           child: Container(
         child: ListView.builder(
-            itemCount: articleList!.length,
+            itemCount: dataList!.length,
+            controller: scrollController,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return _banner();
@@ -226,5 +228,34 @@ class _HomePageState extends FNetState<HomePage>
             }),
       )),
     );
+  }
+
+  @override
+  get child => Scaffold(
+    backgroundColor: Colors.white,
+    body: Column(
+      children: [
+        NavigationBar(
+          childWidget: _appBar(),
+          statusStyle: StatusStyle.DARK_STYLE,
+        ),
+        MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: _buildTypeList(),
+        )
+      ],
+    ),
+  );
+
+  @override
+  Future<HomeArticleModel> getData(int curPage) async{
+    HomeArticleModel articleModel = await HomeDao.getHomeArticle(curPage);
+    return articleModel;
+  }
+
+  @override
+  List<ArticleInfo> parseList(HomeArticleModel result) {
+    return result.datas!;
   }
 }
