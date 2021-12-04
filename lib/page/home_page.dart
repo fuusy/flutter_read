@@ -148,6 +148,7 @@ class _HomePageState
       padding: EdgeInsets.only(top: 20, left: 5, right: 5),
       child: Container(
           child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         mainAxisSpacing: 0,
         crossAxisSpacing: 5,
@@ -232,24 +233,24 @@ class _HomePageState
 
   @override
   get child => Scaffold(
-    backgroundColor: Colors.white,
-    body: Column(
-      children: [
-        NavigationBar(
-          childWidget: _appBar(),
-          statusStyle: StatusStyle.DARK_STYLE,
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            NavigationBar(
+              childWidget: _appBar(),
+              statusStyle: StatusStyle.DARK_STYLE,
+            ),
+            MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: _buildTypeList(),
+            )
+          ],
         ),
-        MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: _buildTypeList(),
-        )
-      ],
-    ),
-  );
+      );
 
   @override
-  Future<HomeArticleModel> getData(int curPage) async{
+  Future<HomeArticleModel> getData(int curPage) async {
     HomeArticleModel articleModel = await HomeDao.getHomeArticle(curPage);
     return articleModel;
   }
