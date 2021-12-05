@@ -24,4 +24,13 @@ class HomeDao {
     var result = await FNet.getInstance().fire(request);
     return HomeArticleModel.fromJson(result['data']);
   }
+
+  ///根据cid请求文章
+  static getArticleByCid(int pageIndex,int cid) async{
+    HomeArticleRequest request = new HomeArticleRequest();
+    request.pathParams = "$pageIndex/json";
+    request.add("cid",cid);
+    var result = await FNet.getInstance().fire(request);
+    return HomeArticleModel.fromJson(result['data']);
+  }
 }

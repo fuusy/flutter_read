@@ -154,14 +154,14 @@ class _HomePageState
         crossAxisSpacing: 5,
         crossAxisCount: 4,
         children: [
-          _buildGridItem('images/icon_iv.png', '面试'),
-          _buildGridItem('images/icon_big.png', '大厂分享'),
-          _buildGridItem('images/icon_op.png', '性能优化'),
-          _buildGridItem('images/icon_daily.png', '每日一问'),
-          _buildGridItem('images/icon_jetpack.png', 'Jetpack'),
-          _buildGridItem('images/icon_open.png', '开源库源码'),
-          _buildGridItem('images/icon_framework.png', 'Framework'),
-          _buildGridItem('images/icon_kotlin.png', 'Kotlin'),
+          _buildGridItem('images/icon_iv.png', '面试', cid: 73),
+          _buildGridItem('images/icon_big.png', '大厂分享', cid: 510),
+          _buildGridItem('images/icon_op.png', '性能优化', cid: 78),
+          _buildGridItem('images/icon_daily.png', '官方发布', cid: 269),
+          _buildGridItem('images/icon_jetpack.png', 'Jetpack', cid: 422),
+          _buildGridItem('images/icon_open.png', '开源库源码', cid: 460),
+          _buildGridItem('images/icon_framework.png', 'Framework', cid: 152),
+          _buildGridItem('images/icon_kotlin.png', 'Kotlin', cid: 231),
         ],
       )),
     );
@@ -170,7 +170,10 @@ class _HomePageState
   ///网格布局item
   _buildGridItem(String imgUrl, String title, {cid}) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        FNavigator.getInstance()!.onIntentTo(RouteStatus.article,
+            args: {"article_cid": cid, "article_title": title});
+      },
       child: Column(
         children: [
           Image(

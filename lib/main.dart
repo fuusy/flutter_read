@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/db/sp_cache.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
+import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
@@ -45,6 +46,7 @@ class _FAppState extends State<FApp> {
             providers: topProviders,
             child: Consumer<ThemeProvider>(builder: (BuildContext context,
                 ThemeProvider themeProvider, Widget? child) {
+              print("切换主题了1111111");
               return MaterialApp(
                 home: widget,
                 theme: themeProvider.getTheme(),
@@ -64,14 +66,22 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
   FRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     //跳转listener
     FNavigator.getInstance()!.registerRouteJumpListener(
-        RouteJumpListener(onJumpTo: (RouteStatus status, {Map? args}) {
+        RouteIntentListener(onJumpTo: (RouteStatus status, {Map? args}) {
       _routeStatus = status;
-      if (status == RouteStatus.detail) {
-        this.videoModel = args!['videoModel'];
-      } else if (status == RouteStatus.webview) {
-        this.articleUrl = args!['article_path'];
-        this.articleTitle = args['article_title'];
+      switch(status){
+        case RouteStatus.detail:
+          this.videoModel = args!['videoModel'];
+          break;
+        case RouteStatus.webview:
+          this.articleUrl = args!['article_path'];
+          this.articleTitle = args['article_title'];
+          break;
+        case RouteStatus.article:
+          this.cid = args!['article_cid'];
+          this.articleTitle = args['article_title'];
+          break;
       }
+
       notifyListeners();
     }));
   }
@@ -80,6 +90,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
   VideoModel? videoModel;
   String? articleUrl;
   String? articleTitle;
+  int cid = 0;
 
   RoutePath? path;
   RouteStatus _routeStatus = RouteStatus.home;
@@ -106,18 +117,28 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
 
     //根据状态，创建各个page
     var page;
-    if (routeStatus == RouteStatus.home) {
-      pages.clear();
-      page = pageWrap(BottomNavigator());
-    } else if (routeStatus == RouteStatus.detail) {
-      page = pageWrap(VideoDetailPage(videoModel!));
-    } else if (routeStatus == RouteStatus.register) {
-      page = pageWrap(RegisterPage());
-    } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage());
-    } else if (routeStatus == RouteStatus.webview) {
-      page = pageWrap(WebViewPage(url: articleUrl, title: articleTitle));
+    switch(routeStatus){
+      case RouteStatus.home:
+        pages.clear();
+        page = pageWrap(BottomNavigator());
+        break;
+      case RouteStatus.login:
+        page = pageWrap(LoginPage());
+        break;
+      case RouteStatus.register:
+        page = pageWrap(RegisterPage());
+        break;
+      case RouteStatus.detail:
+        page = pageWrap(VideoDetailPage(videoModel!));
+        break;
+      case RouteStatus.webview:
+        page = pageWrap(WebViewPage(url: articleUrl, title: articleTitle));
+        break;
+      case RouteStatus.article:
+        page = pageWrap(ArticlePage(cid: cid,title: articleTitle,));
+        break;
     }
+
 
     tempPages = [...tempPages, page];
     pages = tempPages;

@@ -14,7 +14,7 @@ class CardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.webview,args: {
+        FNavigator.getInstance()?.onIntentTo(RouteStatus.webview,args: {
         "article_path": projectInfo!.link!,
         "article_title": projectInfo!.title
         });

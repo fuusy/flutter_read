@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/login_dao.dart';
+import 'package:flutter_project/model/mine/user.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/mine_page.dart';
+import 'package:flutter_project/provider/theme_provider.dart';
+import 'package:flutter_project/provider/user_provider.dart';
 import 'package:flutter_project/utils/string_util.dart';
 import 'package:flutter_project/utils/toast_util.dart';
 import 'package:flutter_project/widget/app_toolbar.dart';
 import 'package:flutter_project/widget/login_button.dart';
 import 'package:flutter_project/widget/login_input.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -29,7 +33,8 @@ class _LoginPageState extends FNetState<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar("密码登录", "注册", (){
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.register);
+        //FNavigator.getInstance()?.onJumpTo(RouteStatus.register);
+        context.read<ThemeProvider>().setThemeMode('dark');
       }),
       body: Container(
         child: ListView(
@@ -86,6 +91,10 @@ class _LoginPageState extends FNetState<LoginPage> {
       var result = await LoginDao.login(userName!, passWord!);
       if (result['errorCode'] == 0) {
         print('登录成功');
+        User user = User.fromJsonMap(result['data']);
+        var userProvider = context.read<UserProvider>();
+        userProvider.saveUser(user);
+        Navigator.of(context).pop(true);
         showToast('登录成功');
       } else {
         print(result['errorMsg']);

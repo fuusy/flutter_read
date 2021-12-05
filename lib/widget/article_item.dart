@@ -12,7 +12,7 @@ class ArticleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FNavigator.getInstance()!.onJumpTo(RouteStatus.webview, args: {
+        FNavigator.getInstance()!.onIntentTo(RouteStatus.webview, args: {
           "article_path": articleInfo!.link!,
           "article_title": articleInfo!.title
         });

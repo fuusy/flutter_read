@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
+import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/register_page.dart';
@@ -28,7 +29,7 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus status) {
 }
 
 ///枚举，代表页面
-enum RouteStatus { login, register, home, detail, webview, unknown }
+enum RouteStatus { login, register, home, detail, webview, article, unknown }
 
 RouteStatus getStatus(MaterialPage page) {
   if (page.child is LoginPage) {
@@ -41,6 +42,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.detail;
   } else if (page.child is WebViewPage) {
     return RouteStatus.webview;
+  } else if (page.child is ArticlePage) {
+    return RouteStatus.article;
   } else {
     return RouteStatus.unknown;
   }
@@ -54,9 +57,9 @@ class RouteStatusInfo {
 }
 
 ///页面跳转
-class FNavigator extends _RouteJumpListener {
+class FNavigator extends _RouteIntentListener {
   static FNavigator? _instance;
-  RouteJumpListener? routeJumpListener;
+  RouteIntentListener? routeJumpListener;
   List<RouteChangeListener> _listener = [];
 
   RouteStatusInfo? _cur;
@@ -90,7 +93,7 @@ class FNavigator extends _RouteJumpListener {
   }
 
   //注册跳转listener
-  void registerRouteJumpListener(RouteJumpListener listener) {
+  void registerRouteJumpListener(RouteIntentListener listener) {
     this.routeJumpListener = listener;
   }
 
@@ -101,7 +104,7 @@ class FNavigator extends _RouteJumpListener {
   }
 
   @override
-  void onJumpTo(RouteStatus status, {Map? args}) {
+  void onIntentTo(RouteStatus status, {Map? args}) {
     routeJumpListener!.onJumpTo!(status, args: args);
   }
 
@@ -116,14 +119,14 @@ class FNavigator extends _RouteJumpListener {
   }
 }
 
-abstract class _RouteJumpListener {
-  void onJumpTo(RouteStatus status, {Map args});
+abstract class _RouteIntentListener {
+  void onIntentTo(RouteStatus status, {Map args});
 }
 
 typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map? args});
 
-class RouteJumpListener {
+class RouteIntentListener {
   final OnJumpTo? onJumpTo;
 
-  RouteJumpListener({this.onJumpTo});
+  RouteIntentListener({this.onJumpTo});
 }

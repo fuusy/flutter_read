@@ -27,7 +27,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar("注册", "登录", () {
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.login);
+        FNavigator.getInstance()?.onIntentTo(RouteStatus.login);
       }),
       body: Container(
         child: ListView(
@@ -111,7 +111,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
           await LoginDao.registration(userName!, passWord!, rePassword!);
       if (result['code'] == 0) {
         print('注册成功');
-        FNavigator.getInstance()?.onJumpTo(RouteStatus.login);
+        FNavigator.getInstance()?.onIntentTo(RouteStatus.login);
       } else {
         print(result['message']);
       }
