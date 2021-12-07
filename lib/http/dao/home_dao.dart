@@ -35,12 +35,13 @@ class HomeDao {
     return HomeArticleModel.fromJson(result['data']);
   }
 
+  ///获取搜素结果
   static getSearchResult(int pageIndex,String query) async{
     SearchRequest request = SearchRequest();
     request.pathParams = '/$pageIndex/json';
     request.add("k", query);
     var result = await FNet.getInstance().fire(request);
     print("搜索结果 $result");
-
+    return HomeArticleModel.fromJson(result['data']);
   }
 }

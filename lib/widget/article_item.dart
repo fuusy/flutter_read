@@ -11,6 +11,7 @@ class ArticleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         FNavigator.getInstance()!.onIntentTo(RouteStatus.webview, args: {
           "article_path": articleInfo!.link!,
