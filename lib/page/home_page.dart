@@ -7,10 +7,12 @@ import 'package:flutter_project/http/dao/home_dao.dart';
 import 'package:flutter_project/model/home/banner_model.dart';
 import 'package:flutter_project/model/home/home_article_model.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
+import 'package:flutter_project/page/search_delegate.dart';
 import 'package:flutter_project/widget/article_item.dart';
 import 'package:flutter_project/widget/f_banner.dart';
 import 'package:flutter_project/widget/navigation_bar.dart';
 
+///首页
 class HomePage extends StatefulWidget {
   final ValueChanged<int>? onIntentTo;
 
@@ -66,6 +68,7 @@ class _HomePageState
   @override
   bool get wantKeepAlive => true;
 
+  //bannerUI
   _banner() {
     return Padding(
         padding: EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -119,24 +122,36 @@ class _HomePageState
           Expanded(
               child: Padding(
             padding: EdgeInsets.only(left: 15, right: 15),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                padding: EdgeInsets.only(left: 10),
-                height: 32,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.search,
-                  color: Colors.grey,
+            child: InkWell(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  height: 32,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  decoration: BoxDecoration(color: Colors.grey[100]),
                 ),
-                decoration: BoxDecoration(color: Colors.grey[100]),
               ),
+              onTap: (){
+                showSearch(context: context, delegate: SearchDelegatePage());
+              },
             ),
           )),
-          Icon(
-            Icons.message,
-            color: Colors.grey,
+          InkWell(
+            child: Icon(
+              Icons.message,
+              color: Colors.grey,
+            ),
+            onTap: (){
+              //点击bar消息
+
+            },
           )
+
         ],
       ),
     );

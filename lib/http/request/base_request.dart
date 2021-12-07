@@ -3,7 +3,8 @@ import 'package:flutter_project/main.dart';
 
 enum HttpMethod { GET, POST, DELETE }
 
-abstract class BaseRequest {
+///每个接口请求，继承该抽象类，
+abstract class BaseRequest{
   var pathParams;
   var useHttps = true;
 

@@ -3,6 +3,8 @@ import 'package:flutter_project/http/request/base_request.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_adapter.dart';
 
+///适配Dio网络请求
+///如果有其他网络库，则可以继承FNetAdapter重写。
 class DioAdapter extends FNetAdapter {
   @override
   Future<BaseNetResponse<T>> send<T>(BaseRequest request) async {

@@ -1,6 +1,7 @@
 import 'package:flutter_project/http/core/f_net.dart';
 import 'package:flutter_project/http/request/banner_request.dart';
 import 'package:flutter_project/http/request/home_article_request.dart';
+import 'package:flutter_project/http/request/search_request.dart';
 import 'package:flutter_project/model/home/banner_model.dart';
 import 'package:flutter_project/model/home/home_article_model.dart';
 
@@ -32,5 +33,14 @@ class HomeDao {
     request.add("cid",cid);
     var result = await FNet.getInstance().fire(request);
     return HomeArticleModel.fromJson(result['data']);
+  }
+
+  static getSearchResult(int pageIndex,String query) async{
+    SearchRequest request = SearchRequest();
+    request.pathParams = '/$pageIndex/json';
+    request.add("k", query);
+    var result = await FNet.getInstance().fire(request);
+    print("搜索结果 $result");
+
   }
 }
