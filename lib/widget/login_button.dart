@@ -16,10 +16,10 @@ class LoginButton extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: 1,
       child: MaterialButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        height: 45,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        height: 50,
         onPressed: enable ? onPressed : null,
-        disabledColor: Colors.grey,
+        disabledColor: Colors.grey.shade300,
         color: primary,
         child: Text(
           title!,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/http/dao/home_dao.dart';
 import 'package:flutter_project/model/home/home_article_model.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
-import 'package:flutter_project/utils/constants.dart';
 
 class SearchDelegatePage extends SearchDelegate<String> {
   @override

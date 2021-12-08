@@ -8,6 +8,7 @@ import 'package:flutter_project/model/home/banner_model.dart';
 import 'package:flutter_project/model/home/home_article_model.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/search_delegate.dart';
+import 'package:flutter_project/utils/color.dart';
 import 'package:flutter_project/widget/article_item.dart';
 import 'package:flutter_project/widget/f_banner.dart';
 import 'package:flutter_project/widget/navigation_bar.dart';

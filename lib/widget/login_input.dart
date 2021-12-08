@@ -48,22 +48,20 @@ class _LoginInputState extends State<LoginInput> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 15),
-              width: 100,
-              child: Text(
-                widget.title!,
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            _input()
-          ],
-        ),
         Padding(
-          padding: EdgeInsets.only(left: !widget.lineStretch ? 15 : 0,right: !widget.lineStretch ? 15 : 0),
+          padding: EdgeInsets.only(left: 25,top: 15),
+          child: Text(
+            widget.title!,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        _input(),
+        Padding(
+          padding: EdgeInsets.only(
+              left: !widget.lineStretch ? 25 : 0,
+              right: !widget.lineStretch ? 25 : 0),
           child: Divider(
             height: 1,
             thickness: 0.5,
@@ -74,7 +72,7 @@ class _LoginInputState extends State<LoginInput> {
   }
 
   _input() {
-    return Expanded(
+    return Container(
         child: TextField(
       focusNode: _focusNode,
       onChanged: widget.onChanged,
@@ -85,7 +83,7 @@ class _LoginInputState extends State<LoginInput> {
       style: TextStyle(
           fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 20, right: 20),
+        contentPadding: EdgeInsets.only(left: 25, right: 25),
         border: InputBorder.none,
         hintText: widget.hint ?? '',
         hintStyle: TextStyle(fontSize: 15, color: Colors.grey),

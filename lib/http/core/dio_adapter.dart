@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_project/http/request/base_request.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_adapter.dart';
@@ -13,15 +14,16 @@ class DioAdapter extends FNetAdapter {
     var error;
 
     try {
+      var dio = Dio();
       if (request.httpMethod() == HttpMethod.GET) {
         print("${request.url()}");
-        response = (await Dio().get(request.url(), options: option)) ;
+        response = (await dio.get(request.url(), options: option)) ;
       } else if (request.httpMethod() == HttpMethod.POST) {
         print("${request.url()} ${request.params} $option");
         response =
-        (await Dio().post(request.url(), data: request.params, options: option)) ;
+        (await dio.post(request.url(), data: request.params, options: option)) ;
       } else if (request.httpMethod() == HttpMethod.DELETE) {
-        response = (await Dio().delete(
+        response = (await dio.delete(
             request.url(), data: request.params, options: option)) ;
       }
     } on DioError catch (e) {
