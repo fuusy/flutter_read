@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/http/dao/project_dao.dart';
 import 'package:flutter_project/model/category/category_model.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -55,53 +54,11 @@ class _CategoryPageState extends State<CategoryPage>
                 Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Container(
-                      child: StaggeredGridView.countBuilder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: categoryList[index].children!.length,
-                        itemBuilder: (context, position) {
-                          return Padding(
-                              padding:
-                                  EdgeInsets.only(top: 10, left: 10, right: 10),
-                              child: InkWell(
-                                onTap: () {
-                                  //跳转到相应的列表
-                                  FRouter.getInstance()!
-                                      .onIntentTo(RouteStatus.article, args: {
-                                    "article_cid": categoryList[index]
-                                        .children![position]
-                                        .id,
-                                    "article_title": categoryList[index]
-                                        .children![position]
-                                        .name
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 4, right: 4),
-                                  height: 40,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    categoryList[index]
-                                        .children![position]
-                                        .name!,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                    color: Colors.primaries[Random()
-                                        .nextInt(Colors.primaries.length)],
-                                  ),
-                                ),
-                              ));
-                        },
-                        crossAxisCount: 3,
-                        staggeredTileBuilder: (int index) {
-                          return StaggeredTile.fit(1);
-                        },
-                      ),
-                    )),
+                        child: Wrap(
+                      spacing: 12.0,
+                      runSpacing: 8.0,
+                      children: _buildItem(categoryList[index].children),
+                    ))),
               ],
             ),
           ));
@@ -109,6 +66,28 @@ class _CategoryPageState extends State<CategoryPage>
         itemCount: categoryList.length,
       ),
     );
+  }
+
+  List<Widget> _buildItem(List<Children>? list) {
+    return list!.map((item) {
+      return Padding(
+        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+        child: ActionChip(
+          onPressed: () {
+//跳转到相应的列表
+            FRouter.getInstance()!.onIntentTo(RouteStatus.article,
+                args: {"article_cid": item.id, "article_title": item.name});
+          },
+          label: Text(item.name!),
+          elevation: 5.0,
+          backgroundColor:
+              Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          labelStyle: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }).toList();
   }
 
   void _loadCategoryList() async {

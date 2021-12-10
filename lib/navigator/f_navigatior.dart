@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
+import 'package:flutter_project/page/about_page.dart';
 import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
@@ -30,7 +31,17 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus status) {
 }
 
 ///枚举，代表页面
-enum RouteStatus { login, register, home, detail, webview, article, collect ,unknown }
+enum RouteStatus {
+  login,
+  register,
+  home,
+  detail,
+  webview,
+  article,
+  collect,
+  about,
+  unknown
+}
 
 RouteStatus getStatus(MaterialPage page) {
   if (page.child is LoginPage) {
@@ -45,10 +56,11 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.webview;
   } else if (page.child is ArticlePage) {
     return RouteStatus.article;
-  } else if(page.child is MyCollectPage){
+  } else if (page.child is MyCollectPage) {
     return RouteStatus.collect;
-  }
-  else {
+  } else if (page.child is AboutPage) {
+    return RouteStatus.about;
+  } else {
     return RouteStatus.unknown;
   }
 }

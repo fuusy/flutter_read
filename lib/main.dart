@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/db/sp_cache.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
+import 'package:flutter_project/page/about_page.dart';
 import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/my_collect_page.dart';
@@ -145,6 +146,9 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
         break;
       case RouteStatus.collect:
         page = pageWrap(MyCollectPage());
+        break;
+      case RouteStatus.about:
+        page = pageWrap(AboutPage());
         break;
     }
 
