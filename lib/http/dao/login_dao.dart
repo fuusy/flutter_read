@@ -34,12 +34,12 @@ class LoginDao {
     print("result = $result");
 
     if(result['code']==0 &&result['data']!=null){
-      FCache.getInstance()?.setString(LOGIN_TOKEN, result['data']);
+      SpCache.getInstance()?.setString(LOGIN_TOKEN, result['data']);
     }
     return result;
   }
 
   static getToken(){
-    return FCache.getInstance()?.get(LOGIN_TOKEN);
+    return SpCache.getInstance()?.get(LOGIN_TOKEN);
   }
 }

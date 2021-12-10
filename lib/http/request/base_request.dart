@@ -37,7 +37,7 @@ abstract class BaseRequest{
 
     if(needLogin()){
       //需要登录,请求头添加token
-      addHeader(LoginDao.LOGIN_TOKEN, LoginDao.getToken());
+      //addHeader(LoginDao.LOGIN_TOKEN, LoginDao.getToken());
     }
     return uri.toString();
   }

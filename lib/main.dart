@@ -4,13 +4,16 @@ import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/login_page.dart';
+import 'package:flutter_project/page/my_collect_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/page/webview_page.dart';
 import 'package:flutter_project/provider/provider_manager.dart';
 import 'package:flutter_project/provider/theme_provider.dart';
+import 'package:flutter_project/utils/toast_util.dart';
 import 'package:provider/provider.dart';
 
+import 'http/core/dio_adapter.dart';
 import 'model/video_model.dart';
 
 void main() {
@@ -29,9 +32,10 @@ class _FAppState extends State<FApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FCache?>(
-        future: FCache.preInit(),
-        builder: (BuildContext context, AsyncSnapshot<FCache?> snap) {
+    DioAdapter.initCookJar();
+    return FutureBuilder<SpCache?>(
+        future: SpCache.preInit(),
+        builder: (BuildContext context, AsyncSnapshot<SpCache?> snap) {
           var widget = snap.connectionState == ConnectionState.done
               ? Router(
                   routerDelegate: _routeDelegate,
@@ -46,7 +50,6 @@ class _FAppState extends State<FApp> {
             providers: topProviders,
             child: Consumer<ThemeProvider>(builder: (BuildContext context,
                 ThemeProvider themeProvider, Widget? child) {
-              print("切换主题了1111111");
               return MaterialApp(
                 home: widget,
                 theme: themeProvider.getTheme(),
@@ -65,10 +68,10 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
 
   FRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     //跳转listener
-    FNavigator.getInstance()!.registerRouteJumpListener(
+    FRouter.getInstance()!.registerRouteJumpListener(
         RouteIntentListener(onJumpTo: (RouteStatus status, {Map? args}) {
       _routeStatus = status;
-      switch(status){
+      switch (status) {
         case RouteStatus.detail:
           this.videoModel = args!['videoModel'];
           break;
@@ -96,11 +99,11 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
   RouteStatus _routeStatus = RouteStatus.home;
 
   RouteStatus get routeStatus {
-    // if (_routeStatus != RouteStatus.register && LoginDao.getToken() == null) {
-    //   //不是注册页面且没登录，即跳到登录界面
-    //   return _routeStatus = RouteStatus.login;
-    // } else
-    if (videoModel != null) {
+    if ((_routeStatus == RouteStatus.collect) &&
+        !SpCache.getInstance()!.isLogin()) {
+      showToast("请先登录");
+      return _routeStatus = RouteStatus.login;
+    } else if (videoModel != null) {
       return _routeStatus = RouteStatus.detail;
     } else {
       return _routeStatus;
@@ -117,7 +120,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
 
     //根据状态，创建各个page
     var page;
-    switch(routeStatus){
+    switch (routeStatus) {
       case RouteStatus.home:
         pages.clear();
         page = pageWrap(BottomNavigator());
@@ -135,16 +138,21 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
         page = pageWrap(WebViewPage(url: articleUrl, title: articleTitle));
         break;
       case RouteStatus.article:
-        page = pageWrap(ArticlePage(cid: cid,title: articleTitle,));
+        page = pageWrap(ArticlePage(
+          cid: cid,
+          title: articleTitle,
+        ));
+        break;
+      case RouteStatus.collect:
+        page = pageWrap(MyCollectPage());
         break;
     }
-
 
     tempPages = [...tempPages, page];
     pages = tempPages;
 
     //进入页面 通知路由变化
-    FNavigator.getInstance()?.notify(tempPages, pages);
+    FRouter.getInstance()?.notify(tempPages, pages);
 
     return WillPopScope(
         child: Navigator(
@@ -167,7 +175,7 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
             //退出时，通知页面变化
             var tempPages = [...pages];
             pages.removeLast();
-            FNavigator.getInstance()?.notify(pages, tempPages);
+            FRouter.getInstance()?.notify(pages, tempPages);
             return true;
           },
         ),

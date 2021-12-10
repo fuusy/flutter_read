@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fuusy.flutter_project">
    <application
-        android:label="flutter_project"
-        android:icon="@mipmap/ic_launcher">
+        android:label="ic_flutter"
+        android:icon="@mipmap/ic_flutter">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

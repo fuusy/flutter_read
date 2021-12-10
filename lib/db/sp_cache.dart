@@ -1,46 +1,82 @@
+import 'dart:convert';
+
+import 'package:flutter_project/model/mine/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// 缓存基类
-class FCache {
-  SharedPreferences? pres;
+class SpCache {
+  static User user = User();
+  SharedPreferences? sp;
 
-  FCache._() {
+  SpCache._() {
     init();
   }
 
-  static FCache? _instance;
+  static SpCache? _instance;
 
-  FCache._pre(SharedPreferences preferences) {
-    this.pres = preferences;
+  SpCache._pre(SharedPreferences preferences) {
+    this.sp = preferences;
   }
 
-  static Future<FCache?> preInit() async {
+  static Future<SpCache?> preInit() async {
     if (_instance == null) {
       var prefs = await SharedPreferences.getInstance();
-      _instance = FCache._pre(prefs);
+      _instance = SpCache._pre(prefs);
     }
 
     return _instance;
   }
 
-  static FCache? getInstance() {
+  static SpCache? getInstance() {
     if (_instance == null) {
-      _instance = FCache._();
+      _instance = SpCache._();
     }
     return _instance;
   }
 
   void init() async {
-    if (pres == null) {
-      pres = await SharedPreferences.getInstance();
+    if (sp == null) {
+      sp = await SharedPreferences.getInstance();
     }
   }
 
   setString(String key, String value) {
-    pres?.setString(key, value);
+    sp?.setString(key, value);
   }
 
   Object? get<T>(String key) {
-    return pres?.get(key) ?? null;
+    return sp?.get(key) ?? null;
+  }
+
+  ///保存一个对象
+  void _putObject(String key, Object value) {
+    sp!.setString(key, json.encode(value));
+  }
+
+  ///保存登录后的用户信息
+  ///已登录
+  void saveUser(User user) {
+    _putObject("key_user", user);
+    sp!.setBool("key_is_login", true);
+  }
+
+  ///判断是否已经登录
+  bool isLogin() {
+    return sp!.getBool("key_is_login") ?? false;
+  }
+
+  ///获取User数据
+  User getUser() {
+    Map? userMap = getObject("key_user");
+    if(userMap!=null){
+      var user = User.fromJsonMap(userMap);
+      return user;
+    }
+    return User();
+  }
+
+  Map? getObject(String key) {
+    String? _data = sp?.getString(key);
+    return (_data == null || _data.isEmpty) ? null : json.decode(_data);
   }
 }

@@ -48,11 +48,11 @@ class _ProjectPageState extends FNetState<ProjectPage>
           ),
           Flexible(
               child: TabBarView(
-                children: projectTabList.map((tab) {
-                  return ProjectTabPage(cid: tab.id);
-                }).toList(),
-                controller: _tabController,
-              ))
+            children: projectTabList.map((tab) {
+              return ProjectTabPage(cid: tab.id);
+            }).toList(),
+            controller: _tabController,
+          ))
         ],
       ),
     );
@@ -64,6 +64,8 @@ class _ProjectPageState extends FNetState<ProjectPage>
   ///top tab样式
   _topTabBar() {
     return TabBar(
+      unselectedLabelColor: Colors.black,
+      labelColor: primary,
       controller: _tabController,
       isScrollable: true,
       tabs: projectTabList.map((tab) {
@@ -89,8 +91,7 @@ class _ProjectPageState extends FNetState<ProjectPage>
       List<ProjectTabModel>? tabModel = await ProjectDao.getTab();
       print('loadData $tabModel');
       if (tabModel != null) {
-        _tabController =
-            TabController(length: tabModel.length, vsync: this);
+        _tabController = TabController(length: tabModel.length, vsync: this);
       }
       setState(() {
         projectTabList = tabModel!;

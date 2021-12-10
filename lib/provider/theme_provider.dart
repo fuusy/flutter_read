@@ -14,7 +14,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   ThemeMode? getThemeMode() {
-    var  theme = FCache.getInstance()!.get("key");
+    var  theme = SpCache.getInstance()!.get("key");
     switch (theme) {
       case "Dark":
         _themeMode = ThemeMode.dark;
@@ -34,7 +34,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   void setThemeMode(String mode) {
-    FCache.getInstance()!.setString("key", mode);
+    SpCache.getInstance()!.setString("key", mode);
     notifyListeners();
   }
 

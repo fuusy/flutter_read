@@ -48,7 +48,7 @@ class SearchDelegatePage extends SearchDelegate<String> {
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          FNavigator.getInstance()!
+                          FRouter.getInstance()!
                               .onIntentTo(RouteStatus.webview, args: {
                             "article_path": result![index].link!,
                             "article_title": result[index].title

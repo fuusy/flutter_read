@@ -10,7 +10,7 @@ import 'package:flutter_project/utils/color.dart';
 abstract class BaseRefreshLoadStateState<M, L, T extends StatefulWidget>
     extends FNetState<T> with AutomaticKeepAliveClientMixin {
   List<L> dataList = [];
-  int pagePos = 1;
+  int pagePos = 0;
   bool loading = false;
   ScrollController scrollController = ScrollController();
 
@@ -54,11 +54,10 @@ abstract class BaseRefreshLoadStateState<M, L, T extends StatefulWidget>
     }
     loading = true;
     if (!isLoadMore) {
-      pagePos = 1;
+      pagePos = 0;
     }
 
     var curPage = pagePos + (isLoadMore ? 1 : 0);
-    print("pppppp $curPage");
     try {
       var result = await getData(curPage);
       setState(() {

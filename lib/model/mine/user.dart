@@ -1,19 +1,33 @@
 
 class User {
 
-  bool admin;
-  List<dynamic> chapterTops;
-  List<dynamic> collectIds;
-  String email;
-  String icon;
-  int id;
-  String nickname;
-  String password;
-  String token;
-  int type;
-  String username;
+  bool? admin;
+  List<dynamic>? chapterTops;
+  List<dynamic>? collectIds;
+  String? email;
+  String? icon;
+  int? id;
+  String? nickname;
+  String? password;
+  String? token;
+  int? type;
+  String? username;
 
-	User.fromJsonMap(Map<String, dynamic> map): 
+
+	User(
+      {this.admin,
+      this.chapterTops,
+      this.collectIds,
+      this.email,
+      this.icon,
+      this.id,
+      this.nickname,
+      this.password,
+      this.token,
+      this.type,
+      this.username});
+
+  User.fromJsonMap( dynamic map):
 		admin = map["admin"],
 		chapterTops = map["chapterTops"],
 		collectIds = map["collectIds"],

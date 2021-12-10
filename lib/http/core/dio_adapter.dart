@@ -1,12 +1,23 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_project/http/request/base_request.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_adapter.dart';
+import 'package:path_provider/path_provider.dart';
 
 ///适配Dio网络请求
 ///如果有其他网络库，则可以继承FNetAdapter重写。
 class DioAdapter extends FNetAdapter {
+  static PersistCookieJar? _cookieJar;
+
+  static Future initCookJar() async{
+    Directory? directory = await getApplicationDocumentsDirectory();
+    _cookieJar = new PersistCookieJar(storage: FileStorage(directory.path));
+  }
+
   @override
   Future<BaseNetResponse<T>> send<T>(BaseRequest request) async {
     Response? response ;
@@ -15,6 +26,8 @@ class DioAdapter extends FNetAdapter {
 
     try {
       var dio = Dio();
+      dio.interceptors.add(CookieManager(_cookieJar!));
+
       if (request.httpMethod() == HttpMethod.GET) {
         print("${request.url()}");
         response = (await dio.get(request.url(), options: option)) ;

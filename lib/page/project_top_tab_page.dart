@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_project/http/core/f_error.dart';
-import 'package:flutter_project/http/core/f_net_state.dart';
+import 'package:flutter_project/base/base_refresh_load_state.dart';
 import 'package:flutter_project/http/dao/project_dao.dart';
 import 'package:flutter_project/model/project/project_model.dart';
 import 'package:flutter_project/widget/card_view.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+///项目模块下，每个tab下的公用页面
 class ProjectTabPage extends StatefulWidget {
   final int? cid;
 
@@ -16,66 +16,38 @@ class ProjectTabPage extends StatefulWidget {
   _ProjectTabPageState createState() => _ProjectTabPageState();
 }
 
-class _ProjectTabPageState extends FNetState<ProjectTabPage>
-    with AutomaticKeepAliveClientMixin {
-  List<ProjectInfo> _projectList = [];
-  int pagePosition = 1; //页数
-
-  @override
-  void initState() {
-    super.initState();
-    _loadProjectListData(widget.cid!);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: StaggeredGridView.countBuilder(
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-            crossAxisCount: 2,
-            itemCount: _projectList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CardView(
-                projectInfo: _projectList[index],
-              );
-            },
-            staggeredTileBuilder: (int index) {
-              return StaggeredTile.fit(1);
-            }));
-  }
-
-  void _loadProjectListData(int cid, {loadMore = false}) async {
-    if (!loadMore) {
-      pagePosition = 1;
-    }
-    var curPosition = pagePosition + (loadMore ? 1 : 0);
-
-    try {
-      ProjectModel projectModel =
-          await ProjectDao.getProjectFromTab(curPosition, cid);
-      print('${projectModel.toString()}');
-      List<ProjectInfo>? projectList = projectModel.datas;
-      print('_loadProjectListData $projectList');
-
-      setState(() {
-        if (loadMore) {
-          if (projectList!.isNotEmpty) {
-            _projectList = [..._projectList, ...projectList];
-            pagePosition++;
-          }
-        } else {
-          _projectList = projectList ?? [];
-        }
-      });
-    } on NeedAuth catch (e) {
-      print(e);
-    } on FNetError catch (e) {
-      print(e);
-    }
-  }
-
+class _ProjectTabPageState extends BaseRefreshLoadStateState<ProjectModel,
+    ProjectInfo, ProjectTabPage> {
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  get child => MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: StaggeredGridView.countBuilder(
+          controller: scrollController,
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+          crossAxisCount: 2,
+          itemCount: dataList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return CardView(
+              projectInfo: dataList[index],
+            );
+          },
+          staggeredTileBuilder: (int index) {
+            return StaggeredTile.fit(1);
+          }));
+
+  @override
+  Future<ProjectModel> getData(int curPage) async {
+    ProjectModel projectModel =
+        await ProjectDao.getProjectFromTab(curPage, widget.cid!);
+    return projectModel;
+  }
+
+  @override
+  List<ProjectInfo> parseList(ProjectModel result) {
+    return result.datas!;
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
+import 'package:flutter_project/page/my_collect_page.dart';
 import 'package:flutter_project/page/register_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/page/webview_page.dart';
@@ -29,7 +30,7 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus status) {
 }
 
 ///枚举，代表页面
-enum RouteStatus { login, register, home, detail, webview, article, unknown }
+enum RouteStatus { login, register, home, detail, webview, article, collect ,unknown }
 
 RouteStatus getStatus(MaterialPage page) {
   if (page.child is LoginPage) {
@@ -44,7 +45,10 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.webview;
   } else if (page.child is ArticlePage) {
     return RouteStatus.article;
-  } else {
+  } else if(page.child is MyCollectPage){
+    return RouteStatus.collect;
+  }
+  else {
     return RouteStatus.unknown;
   }
 }
@@ -57,17 +61,17 @@ class RouteStatusInfo {
 }
 
 ///页面跳转
-class FNavigator extends _RouteIntentListener {
-  static FNavigator? _instance;
+class FRouter extends _RouteIntentListener {
+  static FRouter? _instance;
   RouteIntentListener? routeJumpListener;
   List<RouteChangeListener> _listener = [];
 
   RouteStatusInfo? _cur;
   RouteStatusInfo? _bottomTab;
 
-  static FNavigator? getInstance() {
+  static FRouter? getInstance() {
     if (_instance == null) {
-      _instance = FNavigator();
+      _instance = FRouter();
     }
     return _instance;
   }

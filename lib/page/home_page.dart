@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/base/base_refresh_load_state.dart';
+import 'package:flutter_project/http/core/dio_adapter.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/http/dao/home_dao.dart';
@@ -23,6 +24,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+///state继承BaseRefreshLoadStateState，BaseRefreshLoadStateState是封装了刷新和下拉加载更多的框架
+///[HomeArticleModel] 相应列表model
+///[ArticleInfo] 列表item model，
+///[HomePage] 当前页面page
+///实现父类的三个方法
 class _HomePageState
     extends BaseRefreshLoadStateState<HomeArticleModel, ArticleInfo, HomePage> {
   var listener;
@@ -33,7 +39,7 @@ class _HomePageState
   @override
   void initState() {
     super.initState();
-    FNavigator.getInstance()?.addRouteListener(
+    FRouter.getInstance()?.addRouteListener(
         this.listener = (curInfo, preInfo) => {print('home ${curInfo.page}')});
     _loadBanner();
     //_loadArticle();
@@ -42,7 +48,7 @@ class _HomePageState
   @override
   void dispose() {
     super.dispose();
-    FNavigator.getInstance()?.removeRouteListener(this.listener);
+    FRouter.getInstance()?.removeRouteListener(this.listener);
   }
 
   // @override
@@ -187,7 +193,7 @@ class _HomePageState
   _buildGridItem(String imgUrl, String title, {cid}) {
     return GestureDetector(
       onTap: () {
-        FNavigator.getInstance()!.onIntentTo(RouteStatus.article,
+        FRouter.getInstance()!.onIntentTo(RouteStatus.article,
             args: {"article_cid": cid, "article_title": title});
       },
       child: Column(

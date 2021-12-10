@@ -31,7 +31,9 @@ class _WebViewPageState extends State<WebViewPage> {
           child: const DecoratedBox(decoration: BoxDecoration(color: Color(0xFFEEEEEE))),
         ),
         Expanded(child: InAppWebView(
+
           initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
+
         ))
       ],
     );

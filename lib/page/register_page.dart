@@ -32,7 +32,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
               height: 220,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                child: Image(image: AssetImage('images/ic_login.jpg'),fit: BoxFit.fill,),
+                child: Image(image: AssetImage('images/ic_login.png'),fit: BoxFit.cover,),
               )),
           Positioned.fill(
               top: 200,
@@ -135,7 +135,7 @@ class _RegisterPageState extends FNetState<RegisterPage> {
           await LoginDao.registration(userName!, passWord!, rePassword!);
       if (result['code'] == 0) {
         print('注册成功');
-        FNavigator.getInstance()?.onIntentTo(RouteStatus.login);
+        FRouter.getInstance()?.onIntentTo(RouteStatus.login);
       } else {
         print(result['message']);
       }

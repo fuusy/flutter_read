@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
-import 'package:flutter_project/page/favorite_page.dart';
+import 'package:flutter_project/page/category_page.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/mine_page.dart';
 import 'package:flutter_project/page/project_page.dart';
 import 'package:flutter_project/utils/color.dart';
 
+///底部tab
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({Key? key}) : super(key: key);
 
@@ -31,12 +32,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         },
       ),
       ProjectPage(),
-      FavoritePage(),
+      CategoryPage(),
       MinePage(),
     ];
 
     if (!_hasBuild) {
-      FNavigator.getInstance()
+      FRouter.getInstance()
           ?.onBottomTabChange(initialPage, _pages[initialPage]);
       _hasBuild = true;
     }
@@ -58,7 +59,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         items: [
           _bottomItem('首页', Icons.home, 0),
           _bottomItem('项目', Icons.local_fire_department, 1),
-          _bottomItem('收藏', Icons.favorite, 2),
+          _bottomItem('分类', Icons.category_outlined, 2),
           _bottomItem('我的', Icons.person, 3),
         ],
       ),
@@ -76,7 +77,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     if (!pageChange) {
       _pageController.jumpToPage(value);
     } else {
-      FNavigator.getInstance()?.onBottomTabChange(value, _pages[value]);
+      FRouter.getInstance()?.onBottomTabChange(value, _pages[value]);
     }
     setState(() {
       _curIndex = value;

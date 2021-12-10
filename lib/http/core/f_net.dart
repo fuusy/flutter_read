@@ -57,6 +57,6 @@ class FNet {
   }
 
   void printLog(log) {
-    print("net_${log}");
+    print("${log}");
   }
 }

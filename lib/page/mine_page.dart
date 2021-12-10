@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_project/db/sp_cache.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/model/mine/mine_item_model.dart';
 import 'package:flutter_project/model/mine/user.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/provider/provider_manager.dart';
 import 'package:flutter_project/provider/user_provider.dart';
 import 'package:flutter_project/utils/cache_util.dart';
+import 'package:flutter_project/utils/color.dart';
 import 'package:flutter_project/utils/view_util.dart';
 import 'package:flutter_project/widget/blur_view.dart';
 import 'package:flutter_project/widget/setting_item.dart';
@@ -53,12 +55,12 @@ class _MinePageState extends FNetState<MinePage>
                     children: [
                       Positioned.fill(
                           child: Container(
-                        color: Colors.blue,
+                        color: primary,
                       )),
-                      Positioned.fill(
-                          child: BlurView(
-                        sigma: 20,
-                      ))
+                      // Positioned.fill(
+                      //     child: BlurView(
+                      //   sigma: 20,
+                      // ))
                     ],
                   ),
                 ),
@@ -68,8 +70,10 @@ class _MinePageState extends FNetState<MinePage>
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               return SettingItem(
-                  iconPath: mineItemList[index].iconUrl,
-                  title: mineItemList[index].title);
+                iconPath: mineItemList[index].iconUrl,
+                title: mineItemList[index].title,
+                index: index,
+              );
             },
             itemCount: mineItemList.length,
           ),
@@ -82,6 +86,12 @@ class _MinePageState extends FNetState<MinePage>
   bool get wantKeepAlive => true;
 
   _buildHead([UserProvider? userProvider]) {
+    String name = "登录/注册";
+    if (SpCache.getInstance()!.isLogin()) {
+      var user = SpCache.getInstance()!.getUser();
+      print("user ${user.toJson()}");
+      name = user.username!;
+    }
     User? user = userProvider!.user;
     return GestureDetector(
       child: Container(
@@ -90,22 +100,24 @@ class _MinePageState extends FNetState<MinePage>
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(100),
               child: Image(
+                width: 60,
+                height: 60,
                 image: AssetImage('images/default_avatar.png'),
               ),
             ),
             viewSpace(width: 15),
             Text(
-              userProvider.hasUser ? user!.nickname : "De",
-              style: TextStyle(fontSize: 12),
+              name,
+              style: TextStyle(fontSize: 14),
             )
           ],
         ),
       ),
       onTap: () {
         //是否需要登录，跳转到登录界面
-        FNavigator.getInstance()!.onIntentTo(RouteStatus.login);
+        FRouter.getInstance()!.onIntentTo(RouteStatus.login);
       },
     );
   }
