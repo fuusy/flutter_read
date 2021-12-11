@@ -5,12 +5,9 @@ import 'package:flutter_project/http/core/f_net_state.dart';
 import 'package:flutter_project/model/mine/mine_item_model.dart';
 import 'package:flutter_project/model/mine/user.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
-import 'package:flutter_project/provider/provider_manager.dart';
 import 'package:flutter_project/provider/user_provider.dart';
-import 'package:flutter_project/utils/cache_util.dart';
 import 'package:flutter_project/utils/color.dart';
 import 'package:flutter_project/utils/view_util.dart';
-import 'package:flutter_project/widget/blur_view.dart';
 import 'package:flutter_project/widget/setting_item.dart';
 import 'package:provider/provider.dart';
 
@@ -25,10 +22,10 @@ class MinePage extends StatefulWidget {
 class _MinePageState extends FNetState<MinePage>
     with AutomaticKeepAliveClientMixin {
   List<MineItemModel> mineItemList = [
-    MineItemModel("images/icon_open.png", "我的收藏"),
-    MineItemModel("images/icon_open.png", "积分排行"),
-    MineItemModel("images/icon_open.png", "设置"),
-    MineItemModel("images/icon_open.png", "关于"),
+    MineItemModel("images/ic_zan.png", "我的收藏"),
+    MineItemModel("images/ic_rank.png", "积分排行"),
+    MineItemModel("images/ic_setting.png", "设置"),
+    MineItemModel("images/ic_about.png", "关于"),
   ];
 
   @override

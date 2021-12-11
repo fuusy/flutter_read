@@ -16,7 +16,7 @@ class _AboutPageState extends State<AboutPage> {
       body: Container(
         alignment: Alignment.topCenter,
         child: Padding(padding: EdgeInsets.only(top: 130),
-        child: Image.asset("images/ic_flutter.png",width: 100,height: 100,),)
+        child: Image.asset("images/launch_image.png",width: 400,height: 300,),)
 
       ),
     );
