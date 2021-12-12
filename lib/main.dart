@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/db/sp_cache.dart';
+import 'package:flutter_project/global.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/about_page.dart';
@@ -33,6 +34,7 @@ class _FAppState extends State<FApp> {
 
   @override
   Widget build(BuildContext context) {
+
     DioAdapter.initCookJar();
     return FutureBuilder<SpCache?>(
         future: SpCache.preInit(),

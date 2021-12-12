@@ -26,6 +26,10 @@ class DioAdapter extends FNetAdapter {
 
     try {
       var dio = Dio();
+      if(_cookieJar==null){
+        Directory? directory = await getApplicationDocumentsDirectory();
+        _cookieJar = new PersistCookieJar(storage: FileStorage(directory.path));
+      }
       dio.interceptors.add(CookieManager(_cookieJar!));
 
       if (request.httpMethod() == HttpMethod.GET) {
@@ -51,7 +55,7 @@ class DioAdapter extends FNetAdapter {
     return buildRes(response, request);
   }
 
-  ///构建HiNetResponse
+  ///BaseNetResponse
   Future<BaseNetResponse<T>> buildRes<T>(
       Response? response, BaseRequest request) {
     return Future.value(BaseNetResponse(

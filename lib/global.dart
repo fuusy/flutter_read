@@ -5,7 +5,6 @@ class Global {
 
 
   static Future preInit() async{
-
     await DioAdapter.initCookJar();
   }
 }
