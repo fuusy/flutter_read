@@ -6,6 +6,7 @@ import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/my_collect_page.dart';
 import 'package:flutter_project/page/register_page.dart';
+import 'package:flutter_project/page/setting_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/page/webview_page.dart';
 
@@ -40,6 +41,7 @@ enum RouteStatus {
   article,
   collect,
   about,
+  setting,
   unknown
 }
 
@@ -60,7 +62,10 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.collect;
   } else if (page.child is AboutPage) {
     return RouteStatus.about;
-  } else {
+  } else if (page.child is SettingPage) {
+    return RouteStatus.setting;
+  }
+  else {
     return RouteStatus.unknown;
   }
 }

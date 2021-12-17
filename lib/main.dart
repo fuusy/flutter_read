@@ -8,6 +8,7 @@ import 'package:flutter_project/page/article_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/my_collect_page.dart';
 import 'package:flutter_project/page/register_page.dart';
+import 'package:flutter_project/page/setting_page.dart';
 import 'package:flutter_project/page/video_detail_page.dart';
 import 'package:flutter_project/page/webview_page.dart';
 import 'package:flutter_project/provider/provider_manager.dart';
@@ -151,6 +152,9 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
         break;
       case RouteStatus.about:
         page = pageWrap(AboutPage());
+        break;
+      case RouteStatus.setting:
+        page = pageWrap(SettingPage());
         break;
     }
 

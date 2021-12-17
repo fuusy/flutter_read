@@ -22,6 +22,10 @@ class SettingItem extends StatelessWidget {
               //我的收藏
               FRouter.getInstance()!.onIntentTo(RouteStatus.collect);
               break;
+            case 2:
+              //设置
+              FRouter.getInstance()!.onIntentTo(RouteStatus.setting);
+              break;
             case 3:
               //关于
               FRouter.getInstance()!.onIntentTo(RouteStatus.about);
