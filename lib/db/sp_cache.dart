@@ -60,6 +60,12 @@ class SpCache {
     sp!.setBool("key_is_login", true);
   }
 
+  ///退出登录后，删除登录信息
+  void clearLoginInfo(){
+    sp?.remove("key_is_login");
+    sp?.remove("key_user");
+  }
+
   ///判断是否已经登录
   bool isLogin() {
     return sp!.getBool("key_is_login") ?? false;
