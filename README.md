@@ -1,4 +1,4 @@
-# Flutter-Play
+# Flutter-ReadAndroid
 
 
 
@@ -48,4 +48,9 @@
 
 ## THANKS
 [玩AndroidAPI](https://www.wanandroid.com/blog/show/2)
+
+
+MIT License
+
+Copyright (c) 2021 fuusy
 
