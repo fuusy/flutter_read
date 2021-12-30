@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/base/base_refresh_load_state.dart';
+import 'package:flutter_project/db/sp_cache.dart';
 import 'package:flutter_project/http/core/dio_adapter.dart';
 import 'package:flutter_project/http/core/f_error.dart';
 import 'package:flutter_project/http/core/f_net_state.dart';
@@ -143,7 +144,7 @@ class _HomePageState
                   decoration: BoxDecoration(color: Colors.grey[100]),
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 showSearch(context: context, delegate: SearchDelegatePage());
               },
             ),
@@ -153,12 +154,10 @@ class _HomePageState
               Icons.message,
               color: Colors.grey,
             ),
-            onTap: (){
+            onTap: () {
               //点击bar消息
-
             },
           )
-
         ],
       ),
     );
@@ -222,8 +221,25 @@ class _HomePageState
       removeTop: true,
       child: ArticleItem(
         articleInfo: dataList[index],
+        onCollect: () {
+          print("!!!!!!!!收藏");
+          if (!SpCache.getInstance()!.isLogin()) {
+            FRouter.getInstance()!.onIntentTo(RouteStatus.login);
+          } else {
+            //点击收藏或者取消
+            _collectArticle(dataList[index].id!);
+          }
+        },
       ),
     );
+  }
+
+  _collectArticle(int id) async {
+    try {
+      await HomeDao.collectArticle(id);
+    } on FNetError catch (e) {
+      print(e);
+    }
   }
 
   _buildTypeList() {

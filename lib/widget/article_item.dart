@@ -7,20 +7,23 @@ import 'package:flutter_project/utils/view_util.dart';
 ///文章list item组件
 class ArticleItem extends StatelessWidget {
   final ArticleInfo? articleInfo;
+  final VoidCallback? onCollect;
 
-  const ArticleItem({Key? key, this.articleInfo}) : super(key: key);
+  const ArticleItem({Key? key, this.articleInfo, this.onCollect})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     String name = "";
-    if(articleInfo!.shareUser!.isEmpty){
+    bool isCollect = articleInfo!.collect!;//是否已经收藏
+
+    if (articleInfo!.shareUser!.isEmpty) {
       name = articleInfo!.author!;
-    }else{
+    } else {
       name = articleInfo!.shareUser!;
     }
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,//空白处点击响应
+      behavior: HitTestBehavior.opaque, //空白处点击响应
       onTap: () {
         FRouter.getInstance()!.onIntentTo(RouteStatus.webview, args: {
           "article_path": articleInfo!.link!,
@@ -44,9 +47,8 @@ class ArticleItem extends StatelessWidget {
                 children: [
                   Container(
                     height: 20,
-                    padding: EdgeInsets.only(left: 4,right: 4),
-                    child: Text(
-                        articleInfo!.chapterName!,
+                    padding: EdgeInsets.only(left: 4, right: 4),
+                    child: Text(articleInfo!.chapterName!,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 12, color: primary)),
                     decoration: BoxDecoration(
@@ -54,10 +56,15 @@ class ArticleItem extends StatelessWidget {
                         border: Border.all(width: 1, color: primary)),
                   ),
                   viewSpace(width: 10),
-                  Image(
-                    image: AssetImage('images/ic_un_favorite.png'),
-                    width: 20,
-                    height: 20,
+                  InkWell(
+                    onTap: onCollect,
+                    child: Image(
+                      image: isCollect
+                          ? AssetImage('images/ic_favorite.png')
+                          : AssetImage('images/ic_un_favorite.png'),
+                      width: 20,
+                      height: 20,
+                    ),
                   ),
                   Expanded(
                       child: Padding(
