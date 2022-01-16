@@ -1,7 +1,9 @@
 
 import 'package:flutter_project/http/core/f_net.dart';
+import 'package:flutter_project/http/request/coin_rank_request.dart';
 import 'package:flutter_project/http/request/my_collect_request.dart';
 import 'package:flutter_project/http/request/user_coin_request.dart';
+import 'package:flutter_project/model/mine/coin_model.dart';
 import 'package:flutter_project/model/mine/collect_model.dart';
 
 class PersonDao{
@@ -20,5 +22,12 @@ class PersonDao{
     request.pathParams="$pageIndex/json";
     var result = await FNet.getInstance().fire(request);
     return CollectModel.fromJson(result['data']);
+  }
+
+  ///积分排行榜
+  static getCoinRank() async{
+     CoinRankRequest request = CoinRankRequest();
+     var result = await FNet.getInstance().fire(request);
+     return CoinModel.fromJson(result['data']);
   }
 }

@@ -1,13 +1,61 @@
 
 class CoinModel {
+  int? curPage;
+  List<Coin>? datas;
+  int? offset;
+  bool? over;
+  int? pageCount;
+  int? size;
+  int? total;
+
+  CoinModel(
+      {this.curPage,
+        this.datas,
+        this.offset,
+        this.over,
+        this.pageCount,
+        this.size,
+        this.total});
+
+  CoinModel.fromJson(Map<String, dynamic> json) {
+    curPage = json['curPage'];
+    if (json['datas'] != null) {
+      datas = new List<Coin>.empty(growable: true);
+      json['datas'].forEach((v) {
+        datas?.add(new Coin.fromJsonMap(v));
+      });
+    }
+    offset = json['offset'];
+    over = json['over'];
+    pageCount = json['pageCount'];
+    size = json['size'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['curPage'] = this.curPage;
+    if (this.datas != null) {
+      data['datas'] = this.datas?.map((v) => v.toJson()).toList();
+    }
+    data['offset'] = this.offset;
+    data['over'] = this.over;
+    data['pageCount'] = this.pageCount;
+    data['size'] = this.size;
+    data['total'] = this.total;
+    return data;
+  }
+}
+
+class Coin {
   int? coinCount;
   int? level;
   String? nickname;
-  int? rank;
+  String? rank;
   int? userId;
   String? username;
 
-  CoinModel.fromJsonMap( dynamic map):
+  Coin.fromJsonMap( dynamic map):
         coinCount = map["coinCount"],
         level = map["level"],
         nickname = map["nickname"],

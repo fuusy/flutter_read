@@ -5,6 +5,7 @@ import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/navigator/f_navigatior.dart';
 import 'package:flutter_project/page/about_page.dart';
 import 'package:flutter_project/page/article_page.dart';
+import 'package:flutter_project/page/coin_rank_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/my_collect_page.dart';
 import 'package:flutter_project/page/register_page.dart';
@@ -35,7 +36,6 @@ class _FAppState extends State<FApp> {
 
   @override
   Widget build(BuildContext context) {
-
     DioAdapter.initCookJar();
     return FutureBuilder<SpCache?>(
         future: SpCache.preInit(),
@@ -155,6 +155,9 @@ class FRouteDelegate extends RouterDelegate<RoutePath>
         break;
       case RouteStatus.setting:
         page = pageWrap(SettingPage());
+        break;
+      case RouteStatus.coinRank:
+        page = pageWrap(CoinRankPage());
         break;
     }
 

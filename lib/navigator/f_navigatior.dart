@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/navigator/bottom_navigator.dart';
 import 'package:flutter_project/page/about_page.dart';
 import 'package:flutter_project/page/article_page.dart';
+import 'package:flutter_project/page/coin_rank_page.dart';
 import 'package:flutter_project/page/home_page.dart';
 import 'package:flutter_project/page/login_page.dart';
 import 'package:flutter_project/page/my_collect_page.dart';
@@ -42,6 +44,7 @@ enum RouteStatus {
   collect,
   about,
   setting,
+  coinRank,
   unknown
 }
 
@@ -64,7 +67,10 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.about;
   } else if (page.child is SettingPage) {
     return RouteStatus.setting;
+  } else if(page.child is CoinRankPage){
+    return RouteStatus.coinRank;
   }
+
   else {
     return RouteStatus.unknown;
   }
