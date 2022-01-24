@@ -40,12 +40,12 @@ class _CoinRankPageState extends State<CoinRankPage> {
               ),
               viewSpace(width: 20),
               Text(
-                "${coinRankList![index].username}",
+                "${coinRankList![index+3].username}",
                 style: TextStyle(fontSize: 20, color: Colors.black),
               ),
               viewSpace(width: 20),
               Expanded(child: Text(
-                "积分：${coinRankList![index].coinCount}",
+                "积分：${coinRankList![index+3].coinCount}",
                 style: TextStyle(fontSize: 20, color: Colors.black26),
               ))
 
