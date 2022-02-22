@@ -46,7 +46,7 @@
 - [ ] Get适配；
 - [x] 积分排行；
 - [x] 收藏、取消收藏；
-- [ ] 个人中心完善。
+- [x] 个人中心完善。
 
 ## THANKS
 [玩AndroidAPI](https://www.wanandroid.com/blog/show/2)
