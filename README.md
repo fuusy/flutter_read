@@ -42,12 +42,6 @@
 - **下拉、上滑加载**：封装下拉刷新、上滑加载更多组件BaseRefreshLoadStateState；
 ......
 
-## TODO
-- [ ] Get适配；
-- [x] 积分排行；
-- [x] 收藏、取消收藏；
-- [x] 个人中心完善。
-
 ## THANKS
 [玩AndroidAPI](https://www.wanandroid.com/blog/show/2)
 
